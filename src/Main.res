@@ -35,6 +35,7 @@ let make = () => {
   | list{"GroupedTeamMembers"} => 
     <div>
       <Header selectedTeam employeeList />
+      <GroupedTeamMembers />
       <Footer />
     </div>
   | _ => 
