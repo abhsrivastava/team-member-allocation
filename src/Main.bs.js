@@ -7,6 +7,8 @@ import * as Employee from "./Employee.bs.js";
 import * as Employees from "./Employees.bs.js";
 import * as Belt_Option from "rescript/lib/es6/belt_Option.js";
 import * as Dom_storage from "rescript/lib/es6/dom_storage.js";
+import * as PageNotFound from "./PageNotFound.bs.js";
+import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.bs.js";
 
 import './styles/Main.css'
 ;
@@ -36,15 +38,29 @@ function Main(props) {
   React.useEffect((function () {
           Dom_storage.setItem("selectedTeam", selectedTeam, localStorage);
         }), [selectedTeam]);
+  var url = RescriptReactRouter.useUrl(undefined, undefined);
+  var match$2 = url.path;
+  if (!match$2) {
+    return React.createElement("div", undefined, React.createElement(Header.make, {
+                    selectedTeam: selectedTeam,
+                    employeeList: employeeList
+                  }), React.createElement(Employees.make, {
+                    selectedTeam: selectedTeam,
+                    employeeList: employeeList,
+                    setSelectedTeam: match[1],
+                    setEmployeeList: match$1[1]
+                  }), React.createElement(Footer.make, {}));
+  }
+  if (match$2.hd === "GroupedTeamMembers" && !match$2.tl) {
+    return React.createElement("div", undefined, React.createElement(Header.make, {
+                    selectedTeam: selectedTeam,
+                    employeeList: employeeList
+                  }), React.createElement(Footer.make, {}));
+  }
   return React.createElement("div", undefined, React.createElement(Header.make, {
                   selectedTeam: selectedTeam,
                   employeeList: employeeList
-                }), React.createElement(Employees.make, {
-                  selectedTeam: selectedTeam,
-                  employeeList: employeeList,
-                  setSelectedTeam: match[1],
-                  setEmployeeList: match$1[1]
-                }), React.createElement(Footer.make, {}));
+                }), React.createElement(PageNotFound.make, {}), React.createElement(Footer.make, {}));
 }
 
 var make = Main;

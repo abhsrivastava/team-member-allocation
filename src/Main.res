@@ -24,17 +24,24 @@ let make = () => {
     Dom.Storage.setItem("selectedTeam", selectedTeam, Dom.Storage.localStorage)
     None
   }, [selectedTeam])
-  <div>
-    <Header 
-      selectedTeam
-      employeeList
-    />
-    <Employees 
-      selectedTeam
-      employeeList
-      setSelectedTeam
-      setEmployeeList
-    />
-    <Footer />
-  </div>
+  let url = RescriptReactRouter.useUrl()
+  switch url.path {
+  | list{} => 
+    <div>
+      <Header selectedTeam employeeList />
+      <Employees selectedTeam employeeList setSelectedTeam setEmployeeList />
+      <Footer />
+    </div>
+  | list{"GroupedTeamMembers"} => 
+    <div>
+      <Header selectedTeam employeeList />
+      <Footer />
+    </div>
+  | _ => 
+    <div>
+      <Header selectedTeam employeeList />
+      <PageNotFound />
+      <Footer />
+    </div>
+  }
 }
