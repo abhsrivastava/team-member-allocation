@@ -14,6 +14,19 @@ import * as RescriptReactRouter from "@rescript/react/src/RescriptReactRouter.bs
 import './styles/Main.css'
 ;
 
+function fromUrl(url) {
+  var match = url.path;
+  if (match) {
+    if (match.hd === "GroupedTeamMembers" && !match.tl) {
+      return /* GroupedTeamMembers */1;
+    } else {
+      return /* PageNotFound */2;
+    }
+  } else {
+    return /* Main */0;
+  }
+}
+
 function Main(props) {
   var match = React.useState(function () {
         var st = Dom_storage.getItem("selectedTeam", localStorage);
@@ -39,24 +52,28 @@ function Main(props) {
   React.useEffect((function () {
           Dom_storage.setItem("selectedTeam", selectedTeam, localStorage);
         }), [selectedTeam]);
-  var url = RescriptReactRouter.useUrl(undefined, undefined);
-  var match$2 = url.path;
-  if (!match$2) {
-    return React.createElement("div", undefined, React.createElement(Header.make, {
-                    selectedTeam: selectedTeam,
-                    employeeList: employeeList
-                  }), React.createElement(Employees.make, {
-                    selectedTeam: selectedTeam,
-                    employeeList: employeeList,
-                    setSelectedTeam: match[1],
-                    setEmployeeList: match$1[1]
-                  }), React.createElement(Footer.make, {}));
-  }
-  if (match$2.hd === "GroupedTeamMembers" && !match$2.tl) {
-    return React.createElement("div", undefined, React.createElement(Header.make, {
-                    selectedTeam: selectedTeam,
-                    employeeList: employeeList
-                  }), React.createElement(GroupedTeamMembers.make, {}), React.createElement(Footer.make, {}));
+  var match$2 = fromUrl(RescriptReactRouter.useUrl(undefined, undefined));
+  if (match$2 !== undefined) {
+    switch (match$2) {
+      case /* Main */0 :
+          return React.createElement("div", undefined, React.createElement(Header.make, {
+                          selectedTeam: selectedTeam,
+                          employeeList: employeeList
+                        }), React.createElement(Employees.make, {
+                          selectedTeam: selectedTeam,
+                          employeeList: employeeList,
+                          setSelectedTeam: match[1],
+                          setEmployeeList: match$1[1]
+                        }), React.createElement(Footer.make, {}));
+      case /* GroupedTeamMembers */1 :
+          return React.createElement("div", undefined, React.createElement(Header.make, {
+                          selectedTeam: selectedTeam,
+                          employeeList: employeeList
+                        }), React.createElement(GroupedTeamMembers.make, {}), React.createElement(Footer.make, {}));
+      case /* PageNotFound */2 :
+          break;
+      
+    }
   }
   return React.createElement("div", undefined, React.createElement(Header.make, {
                   selectedTeam: selectedTeam,
@@ -67,6 +84,7 @@ function Main(props) {
 var make = Main;
 
 export {
+  fromUrl ,
   make ,
 }
 /*  Not a pure module */

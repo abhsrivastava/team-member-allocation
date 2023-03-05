@@ -1,6 +1,18 @@
 %%raw("import './styles/Main.css'")
 @scope("JSON") @val
 external parseEmployee: string => array<Employee.employee> = "parse"
+type route = 
+| Main
+| GroupedTeamMembers
+| PageNotFound
+
+let fromUrl = (url: RescriptReactRouter.url) => {
+  switch url.path {
+  | list{} => Main -> Some
+  | list{"GroupedTeamMembers"} => GroupedTeamMembers -> Some
+  | _ => PageNotFound -> Some
+  }
+}
 
 @react.component
 let make = () => {
@@ -24,15 +36,15 @@ let make = () => {
     Dom.Storage.setItem("selectedTeam", selectedTeam, Dom.Storage.localStorage)
     None
   }, [selectedTeam])
-  let url = RescriptReactRouter.useUrl()
-  switch url.path {
-  | list{} => 
+  let useRouter = () => RescriptReactRouter.useUrl()->fromUrl
+  switch useRouter() {
+  | Some(Main) => 
     <div>
       <Header selectedTeam employeeList />
       <Employees selectedTeam employeeList setSelectedTeam setEmployeeList />
       <Footer />
     </div>
-  | list{"GroupedTeamMembers"} => 
+  | Some(GroupedTeamMembers) => 
     <div>
       <Header selectedTeam employeeList />
       <GroupedTeamMembers />
