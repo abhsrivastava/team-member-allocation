@@ -34,6 +34,7 @@ module.exports = {
     ]
   },
   devServer: {
+    historyApiFallback: true,
     static: {
       directory: outputDir
     },

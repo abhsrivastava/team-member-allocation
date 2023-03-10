@@ -3,7 +3,9 @@
 import * as React from "react";
 
 function PageNotFound(props) {
-  return React.createElement("div", undefined, React.createElement("p", undefined, "Page you are looking for does not exist"));
+  return React.createElement("h1", {
+              className: "text-danger"
+            }, "Page you are looking for does not exist");
 }
 
 var make = PageNotFound;

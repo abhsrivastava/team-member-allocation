@@ -40,18 +40,21 @@ let make = () => {
   switch useRouter() {
   | Some(Main) => 
     <div>
+      <Nav />
       <Header selectedTeam employeeList />
       <Employees selectedTeam employeeList setSelectedTeam setEmployeeList />
       <Footer />
     </div>
   | Some(GroupedTeamMembers) => 
     <div>
+      <Nav />
       <Header selectedTeam employeeList />
-      <GroupedTeamMembers />
+      <GroupedTeamMembers employeeList selectedTeam setSelectedTeam/>
       <Footer />
     </div>
   | _ => 
     <div>
+      <Nav />
       <Header selectedTeam employeeList />
       <PageNotFound />
       <Footer />
