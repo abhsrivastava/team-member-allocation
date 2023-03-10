@@ -52,6 +52,7 @@ function GroupedTeamMembers(props) {
                   className: "row justify-content-center"
                 }, Belt_Array.map(match[0], (function (ge) {
                         return React.createElement("div", {
+                                    key: ge.teamName,
                                     className: "card mt-2",
                                     id: ge.teamName,
                                     style: {

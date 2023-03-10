@@ -41,7 +41,7 @@ let make = (
     {
       groupedEmployees 
       -> Belt.Array.map(ge => {
-        <div id={ge.teamName} className="card mt-2" style={{cursor: "pointer"}}>
+        <div id={ge.teamName} key={ge.teamName} className="card mt-2" style={{cursor: "pointer"}}>
           <h4 id={ge.teamName} className="card-header text-secondary bg-white" onClick={handleTeamClick}>
             {`Team Name ${ge.teamName}` -> React.string}
           </h4>
